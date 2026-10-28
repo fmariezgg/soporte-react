@@ -20,4 +20,5 @@
 ## Follow-up: persistent Resolver (user request)
 - [x] T8 `env.example` (the `.env.example` name is blocked by tool permissions; user suggested a different name) — route: inline
 - [x] T9 Resolver via `PATCH /solicitudes/{id}`: pessimistic update, in-flight disabled button, error banner, aria-label, "Resuelta" badge; 26 tests green — route: inline (frontend) + delegated writer (backend `soporte-api`, PATCH + GET by id + CORS PATCH)
-- [ ] T10 Browser verification with real backend + Postman evidence (Postman desktop cannot be driven from here)
+- [x] T10 Browser verification with real backend: Resolver persisted (evidencia/05-resolver-persistente.jpg)
+- [ ] T11 Postman GET screenshot (needs the user: Postman desktop app)
