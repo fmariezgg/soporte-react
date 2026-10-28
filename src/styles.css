@@ -79,3 +79,8 @@ p.error {
 p.ok {
   color: #2a7;
 }
+
+.filtros > div {
+  display: grid;
+  gap: 0.25rem;
+}

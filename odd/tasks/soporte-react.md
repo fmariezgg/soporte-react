@@ -11,8 +11,8 @@
 - [x] T3 Service layer: `api.js`, `solicitudes.js`, error classification (`describirError`) + tests (15 tests green)
 - [x] T4 Hook `useSolicitudes` (useEffect + AbortController, loading/error/retry, crear, resolver)
 - [x] T5 Components (SolicitudCard, SolicitudForm, Filtros, Indicadores) + App + styles + component tests (22 tests, lint, build green)
-- [ ] T6 Integration with real backend, error-state evidence, README + REFLEXION.md
-- [ ] T7 Final checks: lint, test, build; zip without node_modules
+- [x] T6 Integration with real backend, error-state evidence, README + REFLEXION.md (backend real: GET/POST/400/CORS OK; error state verified; evidence in evidencia/)
+- [x] T7 Final checks: lint, test (24), build all green
 
 ## Evidence
 (filled per task)
