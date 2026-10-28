@@ -1,0 +1,34 @@
+$ curl -i http://localhost:8080/api/solicitudes
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 160
+Date: Wed, 28 Oct 2026 19:24:50 GMT
+
+[{"id":1,"titulo":"Equipo no enciende","prioridad":"Alta","estado":"Pendiente"},{"id":2,"titulo":"Instalar software","prioridad":"Media","estado":"En proceso"}]
+
+$ curl -i -X POST ... {"titulo":"Red caida","prioridad":"Alta"}
+HTTP/1.1 201 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Location: http://localhost:8080/api/solicitudes/3
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Wed, 28 Oct 2026 19:24:50 GMT
+
+{"id":3,"titulo":"Red caida","prioridad":"Alta","estado":"Pendiente"}
+
+$ curl -i -X POST ... invalid body
+HTTP/1.1 400 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Wed, 28 Oct 2026 19:24:50 GMT
+Connection: close
+
+{"status":400,"error":"Bad Request","messages":["prioridad must be one of: Alta, Media, Baja","titulo is required"]}

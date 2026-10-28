@@ -1,0 +1,99 @@
+:root {
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color-scheme: light dark;
+  line-height: 1.5;
+}
+
+body {
+  margin: 0;
+}
+
+main {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+}
+
+form,
+.filtros {
+  display: grid;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+input,
+select,
+button {
+  font: inherit;
+  padding: 0.4rem 0.6rem;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+.indicadores {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+}
+
+.card {
+  border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
+  border-left-width: 6px;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.card h3 {
+  margin: 0.25rem 0;
+}
+
+.prioridad-alta {
+  border-left-color: #d33;
+}
+
+.prioridad-media {
+  border-left-color: #e90;
+}
+
+.prioridad-baja {
+  border-left-color: #3a3;
+}
+
+.error {
+  border: 1px solid #d33;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+}
+
+p.error {
+  color: #d33;
+}
+
+p.ok {
+  color: #2a7;
+}
+
+.filtros > div {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.card.resuelta {
+  opacity: 0.75;
+}
+
+.insignia {
+  color: #2a7;
+  font-weight: 600;
+}
+
+button:disabled {
+  opacity: 0.6;
+}
