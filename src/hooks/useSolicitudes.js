@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import {
+  actualizarEstado,
   crearSolicitud,
   describirError,
   esCancelacion,
@@ -10,6 +11,9 @@ export function useSolicitudes() {
   const [solicitudes, setSolicitudes] = useState([])
   const [cargando, setCargando] = useState(true)
   const [error, setError] = useState('')
+  // Ids with a PATCH in flight (their button is disabled) and the last action error.
+  const [resolviendo, setResolviendo] = useState(() => new Set())
+  const [errorAccion, setErrorAccion] = useState('')
   // Bumping this value re-runs the effect: that is how "Reintentar" works.
   const [intento, setIntento] = useState(0)
 
@@ -43,12 +47,36 @@ export function useSolicitudes() {
     }
   }, [])
 
-  // Client-side only: the API contract has no PATCH, so this is lost on reload.
-  const resolver = useCallback((id) => {
-    setSolicitudes((actuales) =>
-      actuales.map((s) => (s.id === id ? { ...s, estado: 'Resuelta' } : s)),
-    )
+  // Pessimistic update: the UI changes only after the server confirms, so a failed
+  // PATCH never leaves a "Resuelta" card that the backend does not know about.
+  const resolver = useCallback(async (id) => {
+    setErrorAccion('')
+    setResolviendo((ids) => new Set(ids).add(id))
+    try {
+      const actualizada = await actualizarEstado(id, 'Resuelta')
+      setSolicitudes((actuales) => actuales.map((s) => (s.id === id ? actualizada : s)))
+    } catch (err) {
+      setErrorAccion(describirError(err))
+    } finally {
+      setResolviendo((ids) => {
+        const restantes = new Set(ids)
+        restantes.delete(id)
+        return restantes
+      })
+    }
   }, [])
 
-  return { solicitudes, cargando, error, reintentar, agregar, resolver }
+  const descartarErrorAccion = useCallback(() => setErrorAccion(''), [])
+
+  return {
+    solicitudes,
+    cargando,
+    error,
+    reintentar,
+    agregar,
+    resolver,
+    resolviendo,
+    errorAccion,
+    descartarErrorAccion,
+  }
 }

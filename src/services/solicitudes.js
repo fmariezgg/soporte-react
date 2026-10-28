@@ -13,6 +13,11 @@ export async function crearSolicitud({ titulo, prioridad }, signal) {
   return data
 }
 
+export async function actualizarEstado(id, estado, signal) {
+  const { data } = await api.patch(`/solicitudes/${id}`, { estado }, { signal })
+  return data
+}
+
 // Turns an Axios error into a user-facing message. A browser cannot tell a CORS
 // rejection from a server that is down: both surface as ERR_NETWORK without a response.
 export function describirError(err) {
@@ -22,7 +27,7 @@ export function describirError(err) {
       return `Datos inválidos: ${data.messages.join('; ')}`
     }
     if (status === 404) {
-      return 'El recurso no existe (404). Revisa la ruta /api/solicitudes.'
+      return 'El recurso no existe (404): la solicitud ya no está disponible o la ruta es incorrecta.'
     }
     if (status >= 500) {
       return `El servidor falló (${status}). Intenta de nuevo en unos minutos.`

@@ -33,7 +33,7 @@ Desde JavaScript no se pueden distinguir los dos últimos casos (limitación del
 
 ### 5. ¿Qué mejorarías antes de publicar el sistema para usuarios reales?
 
-1. Persistencia real (base de datos) y `PATCH`/`DELETE`; hoy todo se pierde al reiniciar la API.
+1. Persistencia real (base de datos) y `DELETE`; el `PATCH` ya existe, pero todo se pierde al reiniciar la API.
 2. Autenticación y autorización, y CORS restringido al dominio real.
 3. Paginación y búsqueda en el servidor (la guía de sesión 8 ya lo plantea).
 4. HTTPS y configuración por entorno (`VITE_API_URL`), sin URLs fijas.
@@ -51,7 +51,7 @@ Desde JavaScript no se pueden distinguir los dos últimos casos (limitación del
 ## Microretos
 
 - **A (Bienvenida)**: `Bienvenida.jsx` muestra la asignatura, la lista Hardware/Software/Redes y un botón. *Desviación:* en vez de `alert()` muestra un mensaje en la página; `alert` bloquea el hilo de la UI y es difícil de probar. JSX son las etiquetas; JavaScript, lo que va entre `{}` (el `map`, el `onClick`).
-- **B (Resolver)**: `onResolver(id)` se pasa por props desde `App`. La función de `useSolicitudes` usa `map` y devuelve un objeto nuevo `{ ...s, estado: 'Resuelta' }`; no se muta el arreglo. Vive en el padre porque ahí está el estado (*lifting state up*).
+- **B (Resolver)**: `onResolver(id)` se pasa por props desde `App`. La función de `useSolicitudes` usa `map` y reemplaza el elemento por el objeto que devuelve el servidor; no se muta el arreglo. Vive en el padre porque ahí está el estado (*lifting state up*). **Mejora:** ahora persiste con `PATCH /api/solicitudes/{id}`, deshabilita el botón mientras espera, muestra el error si falla y no cambia la tarjeta hasta que el servidor confirma (actualización pesimista). Detalle y tabla comparativa en el README.
 - **C (Pendientes)**: se calcula con `calcularIndicadores(solicitudes)` en cada render. No va en otro `useState` porque duplicaría la fuente de verdad y podría desincronizarse; basta derivarlo.
 
 ## Retos
@@ -66,4 +66,4 @@ Desde JavaScript no se pueden distinguir los dos últimos casos (limitación del
 
 - **Capas**: componentes (UI) → hook (estado + efecto) → servicio (HTTP) → utilidades puras. Cada capa se prueba por separado, sin sobre-ingeniería.
 - **CORS** en el backend con un `WebMvcConfigurer` y una propiedad, en lugar de `@CrossOrigin` fijo, para no recompilar si cambia el puerto.
-- **Pruebas**: 24 pruebas (lógica pura, errores, y la app completa con el servicio simulado). La integración real contra Spring Boot se verificó a mano; ver `evidencia/`.
+- **Pruebas**: 26 pruebas (lógica pura, errores, y la app completa con el servicio simulado). La integración real contra Spring Boot se verificó a mano; ver `evidencia/`.

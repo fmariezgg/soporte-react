@@ -84,3 +84,16 @@ p.ok {
   display: grid;
   gap: 0.25rem;
 }
+
+.card.resuelta {
+  opacity: 0.75;
+}
+
+.insignia {
+  color: #2a7;
+  font-weight: 600;
+}
+
+button:disabled {
+  opacity: 0.6;
+}

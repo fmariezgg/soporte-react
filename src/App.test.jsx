@@ -8,6 +8,7 @@ vi.mock('./services/solicitudes', async (importOriginal) => ({
   ...(await importOriginal()),
   listarSolicitudes: vi.fn(),
   crearSolicitud: vi.fn(),
+  actualizarEstado: vi.fn(),
 }))
 
 const datos = [
@@ -48,19 +49,57 @@ describe('App', () => {
     expect(await screen.findByText('No hay solicitudes registradas.')).toBeInTheDocument()
   })
 
-  it('resolves a request and updates the pending counter without extra state', async () => {
+  it('resolves a request through the API and updates the counters', async () => {
     const user = userEvent.setup()
     servicio.listarSolicitudes.mockResolvedValue(datos)
+    servicio.actualizarEstado.mockResolvedValue({ ...datos[0], estado: 'Resuelta' })
     render(<App />)
     await screen.findByText('Equipo no enciende')
 
     const indicadores = screen.getByRole('region', { name: 'Indicadores operativos' })
     expect(within(indicadores).getByText(/Pendientes/)).toHaveTextContent('1')
 
-    await user.click(screen.getAllByRole('button', { name: 'Resolver' })[0])
+    await user.click(screen.getByRole('button', { name: 'Resolver solicitud: Equipo no enciende' }))
 
+    expect(servicio.actualizarEstado).toHaveBeenCalledWith(1, 'Resuelta')
+    expect(await screen.findByText('✓ Resuelta')).toBeInTheDocument()
     expect(within(indicadores).getByText(/Pendientes/)).toHaveTextContent('0')
     expect(within(indicadores).getByText(/Resueltas/)).toHaveTextContent('1')
+  })
+
+  it('disables the button while the request is in flight', async () => {
+    const user = userEvent.setup()
+    let terminar
+    servicio.listarSolicitudes.mockResolvedValue(datos)
+    servicio.actualizarEstado.mockReturnValue(new Promise((resolve) => (terminar = resolve)))
+    render(<App />)
+    await screen.findByText('Equipo no enciende')
+
+    const boton = screen.getByRole('button', { name: 'Resolver solicitud: Equipo no enciende' })
+    await user.click(boton)
+
+    expect(boton).toBeDisabled()
+    expect(boton).toHaveTextContent('Resolviendo...')
+
+    terminar({ ...datos[0], estado: 'Resuelta' })
+    expect(await screen.findByText('✓ Resuelta')).toBeInTheDocument()
+  })
+
+  it('keeps the request unresolved and shows an error when the PATCH fails', async () => {
+    const user = userEvent.setup()
+    servicio.listarSolicitudes.mockResolvedValue(datos)
+    servicio.actualizarEstado.mockRejectedValue({ response: { status: 404 } })
+    render(<App />)
+    await screen.findByText('Equipo no enciende')
+
+    await user.click(screen.getByRole('button', { name: 'Resolver solicitud: Equipo no enciende' }))
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(/404/)
+    expect(screen.queryByText('✓ Resuelta')).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Resolver solicitud: Equipo no enciende' })).toBeEnabled()
+
+    await user.click(screen.getByRole('button', { name: 'Cerrar' }))
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument()
   })
 
   it('combines the search text with the estado filter', async () => {

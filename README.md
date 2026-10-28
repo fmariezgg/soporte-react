@@ -52,6 +52,22 @@ REFLEXION.md                 # respuestas de autoevaluación y justificación de
 
 Detalle y decisiones en [REFLEXION.md](REFLEXION.md).
 
-## Nota sobre «Resolver»
+## Botón «Resolver» (mejora sobre la guía)
 
-El contrato del laboratorio solo define `GET` y `POST`. El botón **Resolver** (Microreto B) cambia el estado en el cliente, sin mutar el arreglo, y se pierde al recargar. Persistirlo requeriría un `PATCH` en el backend.
+La guía (Microreto B) pide cambiar el estado sin mutar el arreglo, y el contrato del laboratorio solo define `GET` y `POST`. Una primera versión lo hacía solo en el cliente y el cambio se perdía al recargar. Se mejoró así:
+
+| Antes | Ahora |
+|---|---|
+| Solo cambiaba el estado en memoria del navegador | Llama a `PATCH /api/solicitudes/{id}` con `{ "estado": "Resuelta" }`: **persiste** mientras el backend siga encendido |
+| Sin feedback durante la acción | El botón se deshabilita y muestra «Resolviendo...» (evita doble clic) |
+| Un fallo era invisible | Si el `PATCH` falla (404, red, 5xx) se muestra un mensaje con botón *Cerrar* y la tarjeta **no** cambia |
+| Nombre accesible genérico («Resolver») | `aria-label` con el título: «Resolver solicitud: …» |
+| Sin señal visual al terminar | Insignia «✓ Resuelta» y tarjeta atenuada; el botón desaparece |
+
+**Decisión: actualización pesimista.** La interfaz cambia solo cuando el servidor confirma. Una actualización optimista sería más rápida de percibir, pero exige revertir si falla; para una acción poco frecuente se prefirió la consistencia a la velocidad percibida.
+
+Esto amplía el contrato original con `PATCH /api/solicitudes/{id}` y `GET /api/solicitudes/{id}` en `soporte-api` (CORS ahora permite `PATCH`). Si se usa un backend que solo implementa `GET`/`POST`, el botón mostrará el error de la API en vez de fingir éxito.
+
+## Variables de entorno
+
+Copia `env.example` a `.env.local` para cambiar la URL de la API (`VITE_API_URL`). Solo las variables con prefijo `VITE_` llegan al navegador: no guardes secretos ahí.

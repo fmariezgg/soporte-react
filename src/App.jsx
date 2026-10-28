@@ -10,7 +10,17 @@ import { calcularIndicadores, filtrarSolicitudes } from './utils/solicitudes'
 const FILTROS_INICIALES = { texto: '', estado: 'Todas', prioridad: 'Todas' }
 
 function App() {
-  const { solicitudes, cargando, error, reintentar, agregar, resolver } = useSolicitudes()
+  const {
+    solicitudes,
+    cargando,
+    error,
+    reintentar,
+    agregar,
+    resolver,
+    resolviendo,
+    errorAccion,
+    descartarErrorAccion,
+  } = useSolicitudes()
   const [filtros, setFiltros] = useState(FILTROS_INICIALES)
 
   // Derived from `solicitudes` on each render, so it never gets out of sync.
@@ -40,12 +50,27 @@ function App() {
           <Filtros filtros={filtros} onChange={setFiltros} />
 
           <section aria-label="Solicitudes">
+            {errorAccion && (
+              <div role="alert" className="error">
+                <p>{errorAccion}</p>
+                <button type="button" onClick={descartarErrorAccion}>
+                  Cerrar
+                </button>
+              </div>
+            )}
             {solicitudes.length === 0 ? (
               <p>No hay solicitudes registradas.</p>
             ) : visibles.length === 0 ? (
               <p>No hay resultados para los filtros aplicados.</p>
             ) : (
-              visibles.map((s) => <SolicitudCard key={s.id} {...s} onResolver={resolver} />)
+              visibles.map((s) => (
+                <SolicitudCard
+                  key={s.id}
+                  {...s}
+                  onResolver={resolver}
+                  resolviendo={resolviendo.has(s.id)}
+                />
+              ))
             )}
           </section>
         </>
