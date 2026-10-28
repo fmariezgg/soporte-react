@@ -24,7 +24,7 @@ describe('App', () => {
     servicio.listarSolicitudes.mockResolvedValue(datos)
     render(<App />)
 
-    expect(screen.getByRole('status')).toHaveTextContent('Cargando solicitudes')
+    expect(screen.getByText('Cargando solicitudes...')).toBeInTheDocument()
     expect(await screen.findByText('Equipo no enciende')).toBeInTheDocument()
     expect(screen.getByText('Instalar software')).toBeInTheDocument()
   })

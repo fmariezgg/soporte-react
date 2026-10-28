@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Bienvenida from './components/Bienvenida'
 import Filtros from './components/Filtros'
 import Indicadores from './components/Indicadores'
 import SolicitudCard from './components/SolicitudCard'
@@ -19,6 +20,7 @@ function App() {
   return (
     <main>
       <h1>Sistema de Soporte Técnico</h1>
+      <Bienvenida />
 
       {cargando && <p role="status">Cargando solicitudes...</p>}
 
