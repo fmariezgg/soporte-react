@@ -1,7 +1,11 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import Bienvenida from './Bienvenida'
+
+afterEach(() => {
+  vi.restoreAllMocks()
+})
 
 describe('Bienvenida', () => {
   it('lists the support categories', () => {
@@ -13,9 +17,14 @@ describe('Bienvenida', () => {
     ])
   })
 
-  it('shows a greeting after clicking Comenzar', async () => {
+  it('shows a different alert for each button', async () => {
+    const alerta = vi.spyOn(window, 'alert').mockImplementation(() => {})
     render(<Bienvenida />)
+
     await userEvent.click(screen.getByRole('button', { name: 'Comenzar' }))
-    expect(screen.getByRole('status')).toHaveTextContent('Bienvenido a React')
+    expect(alerta).toHaveBeenLastCalledWith('Bienvenido a React')
+
+    await userEvent.click(screen.getByRole('button', { name: 'Ver categorías' }))
+    expect(alerta).toHaveBeenLastCalledWith('Categorías de soporte: Hardware, Software, Redes')
   })
 })

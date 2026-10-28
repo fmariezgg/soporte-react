@@ -22,3 +22,6 @@
 - [x] T9 Resolver via `PATCH /solicitudes/{id}`: pessimistic update, in-flight disabled button, error banner, aria-label, "Resuelta" badge; 26 tests green — route: inline (frontend) + delegated writer (backend `soporte-api`, PATCH + GET by id + CORS PATCH)
 - [x] T10 Browser verification with real backend: Resolver persisted (evidencia/05-resolver-persistente.jpg)
 - [x] T11 Postman web GET 200 OK via Desktop Agent (evidencia/06-postman-get.jpg)
+
+## Follow-up: guide compliance audit
+- [x] T12 Microreto A as the guide states: Comenzar uses alert(), plus a second button with a different alert(); tests spy on window.alert (26 tests green)

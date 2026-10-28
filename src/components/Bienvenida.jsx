@@ -1,12 +1,7 @@
-import { useState } from 'react'
-
 const CATEGORIAS = ['Hardware', 'Software', 'Redes']
 
-// Microreto A. The guide uses alert(); an inline message does the same job
-// without blocking the page (and keeps the component testable).
+// Microreto A, as the guide asks: two buttons, each one showing a different alert().
 export default function Bienvenida() {
-  const [saludo, setSaludo] = useState('')
-
   return (
     <header>
       <h2>Servicios Web · Mi primera aplicación con React</h2>
@@ -16,10 +11,15 @@ export default function Bienvenida() {
           <li key={c}>{c}</li>
         ))}
       </ul>
-      <button type="button" onClick={() => setSaludo('Bienvenido a React, ¡manos a la obra!')}>
+      <button type="button" onClick={() => alert('Bienvenido a React')}>
         Comenzar
       </button>
-      <p role="status">{saludo}</p>
+      <button
+        type="button"
+        onClick={() => alert(`Categorías de soporte: ${CATEGORIAS.join(', ')}`)}
+      >
+        Ver categorías
+      </button>
     </header>
   )
 }

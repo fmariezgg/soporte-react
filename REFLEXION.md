@@ -50,7 +50,7 @@ Desde JavaScript no se pueden distinguir los dos últimos casos (limitación del
 
 ## Microretos
 
-- **A (Bienvenida)**: `Bienvenida.jsx` muestra la asignatura, la lista Hardware/Software/Redes y un botón. *Desviación:* en vez de `alert()` muestra un mensaje en la página; `alert` bloquea el hilo de la UI y es difícil de probar. JSX son las etiquetas; JavaScript, lo que va entre `{}` (el `map`, el `onClick`).
+- **A (Bienvenida)**: `Bienvenida.jsx` muestra la asignatura, la lista Hardware/Software/Redes y dos botones. Como pide la guía, *Comenzar* muestra `alert('Bienvenido a React')` y un segundo botón, *Ver categorías*, muestra una alerta distinta. JSX son las etiquetas; JavaScript, lo que va entre `{}` (el `map`, el `onClick`).
 - **B (Resolver)**: `onResolver(id)` se pasa por props desde `App`. La función de `useSolicitudes` usa `map` y reemplaza el elemento por el objeto que devuelve el servidor; no se muta el arreglo. Vive en el padre porque ahí está el estado (*lifting state up*). **Mejora:** ahora persiste con `PATCH /api/solicitudes/{id}`, deshabilita el botón mientras espera, muestra el error si falla y no cambia la tarjeta hasta que el servidor confirma (actualización pesimista). Detalle y tabla comparativa en el README.
 - **C (Pendientes)**: se calcula con `calcularIndicadores(solicitudes)` en cada render. No va en otro `useState` porque duplicaría la fuente de verdad y podría desincronizarse; basta derivarlo.
 
