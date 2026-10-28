@@ -9,8 +9,8 @@
 - [x] T1 Scaffold Vite + axios + vitest + git (beb6680) — route: inline
 - [x] T2 Pure logic: `filtrarSolicitudes` (estado + prioridad + texto accent-insensitive), `calcularIndicadores` + unit tests — route: inline (8 tests green)
 - [x] T3 Service layer: `api.js`, `solicitudes.js`, error classification (`describirError`) + tests (15 tests green)
-- [ ] T4 Hook `useSolicitudes` (useEffect + AbortController, loading/error/retry, crear, resolver)
-- [ ] T5 Components (SolicitudCard, SolicitudForm, Filtros, Indicadores) + App + styles + component tests
+- [x] T4 Hook `useSolicitudes` (useEffect + AbortController, loading/error/retry, crear, resolver)
+- [x] T5 Components (SolicitudCard, SolicitudForm, Filtros, Indicadores) + App + styles + component tests (22 tests, lint, build green)
 - [ ] T6 Integration with real backend, error-state evidence, README + REFLEXION.md
 - [ ] T7 Final checks: lint, test, build; zip without node_modules
 
