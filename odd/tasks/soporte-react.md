@@ -1,0 +1,18 @@
+# soporte-react
+
+**Objective:** React (Vite, JS) app that lists/creates support requests from a REST service (Axios + useEffect), with loading and error states. Lab guide: Servicios Web, Unidad II.
+**Backend:** `../soporte-api` (Spring Boot, built by a delegated writer). Contract: GET/POST `http://localhost:8080/api/solicitudes`.
+**TDD:** off (no project config); source: none. Runner for checks: `npm test` (vitest), `npm run lint` (oxlint), `npm run build`.
+**Decisions:** `Resolver` is client-side only (contract has no PATCH). CORS via config in the API, not `@CrossOrigin`. Error classification in one service module.
+
+## Tasks
+- [x] T1 Scaffold Vite + axios + vitest + git (beb6680) — route: inline
+- [x] T2 Pure logic: `filtrarSolicitudes` (estado + prioridad + texto accent-insensitive), `calcularIndicadores` + unit tests — route: inline (8 tests green)
+- [x] T3 Service layer: `api.js`, `solicitudes.js`, error classification (`describirError`) + tests (15 tests green)
+- [ ] T4 Hook `useSolicitudes` (useEffect + AbortController, loading/error/retry, crear, resolver)
+- [ ] T5 Components (SolicitudCard, SolicitudForm, Filtros, Indicadores) + App + styles + component tests
+- [ ] T6 Integration with real backend, error-state evidence, README + REFLEXION.md
+- [ ] T7 Final checks: lint, test, build; zip without node_modules
+
+## Evidence
+(filled per task)
